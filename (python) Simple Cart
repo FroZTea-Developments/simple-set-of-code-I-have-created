@@ -1,0 +1,95 @@
+def get_cart_items():
+    """
+    Prompts the user for items, quantities, and prices, builds a cart dict.
+    Includes input validation for numbers.
+    """
+    cart = {}
+    while True:
+        item_count_txt = input("How many distinct items will you enter? ")
+        try:
+            item_count = int(item_count_txt)
+            if item_count <= 0:
+                print("Please enter a positive number.")
+                continue
+            break
+        except ValueError:
+            print("Invalid input. Please enter a whole number (digits only).")
+
+    # Starts cart building loop
+    while item_count > 0:
+        item_name = input(f"Enter name for item {len(cart) + 1}: ")
+        
+        while True:
+            item_qty_txt = input(f"Enter quantity for '{item_name}': ")
+            try:
+                item_qty = int(item_qty_txt)
+                if item_qty <= 0:
+                   print("Quantity must be positive.")
+                   continue
+                break
+            except ValueError:
+                print("Invalid quantity. Please enter a whole number.")
+
+        while True:
+            item_price_txt = input(f"Enter price for '{item_name}' (e.g., 9.99): $")
+            try:
+                item_price = float(item_price_txt)
+                if item_price < 0:
+                   print("Price cannot be negative.")
+                   continue
+                break
+            except ValueError:
+                print("Invalid price. Please enter a number (digits or decimals).")
+
+        cart[item_name] = {"qty": item_qty, "price": item_price}
+        item_count -= 1
+        print("-" * 20) # Separator for next item input
+        
+    return cart
+
+def calculate_subtotal(cart):
+    """
+    Calculates the subtotal from the items in the cart dictionary.
+    """
+    subtotal = 0
+    for info in cart.values():
+        subtotal += info["qty"] * info["price"]
+    return subtotal
+
+def print_receipt(cart):
+    """
+    Displays the items in the cart for a receipt.
+    """
+    print("\n--- Receipt ---")
+    for name, info in cart.items():
+        line_total = info["qty"] * info["price"]
+        # Format output for currency
+        print(f"{name:<20}: {info['qty']:>4} @ ${info['price']:>6.2f} each = ${line_total:>8.2f}")
+    print("---------------")
+
+def compute_tax(subtotal, tax_rate):
+    """
+    Calculates the grand total including tax.
+    """
+    tax_owed = subtotal * tax_rate
+    return subtotal + tax_owed
+
+def main():
+    # Pass cart data between functions instead of using a global variable
+    
+    user_cart = get_cart_items()
+    
+    cart_subtotal = calculate_subtotal(user_cart)
+    print_receipt(user_cart)
+    
+    print(f"Cart subtotal is: ${cart_subtotal:.2f}")
+    
+    TAX_RATE = 0.089 
+    
+    grand_total = compute_tax(cart_subtotal, TAX_RATE)
+    
+    print(f"Tax Rate Applied: {TAX_RATE * 100}%")
+    print(f"Cart Grand Total: ${grand_total:.2f}")
+
+if __name__ == "__main__":
+    main()
