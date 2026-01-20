@@ -1,0 +1,29 @@
+scores = {}
+total = 0
+counter = 0
+high_scores = []
+
+# sentinel
+while True:
+    name_text = input("enter a name ( or 'done' to stop )") # enter first team name to continue, or "done" to end program
+    if name_text.lower() == "done":
+        break
+    score_text = input("enter score")
+    score = int(score_text)
+    total += score
+    counter += 1
+    scores[name_text] = score
+
+print("Average:", total/counter)
+
+# filter and collect
+for n in scores:
+    s = scores[n]
+    if s >= 80:
+        high_scores.append(n)
+
+print("High Scorers:", high_scores)
+
+get_score = input("enter a name")
+
+print(scores.get(get_score, "Not Found"))
