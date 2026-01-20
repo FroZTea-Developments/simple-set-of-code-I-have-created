@@ -1,0 +1,147 @@
+#  ==== introduction ====
+
+print("|| Welcome to Your Game Score Card ||")
+
+# enter team 1 name or cancel creation
+
+team1 = input("Enter First Team Name (Enter 'game over' to terminate session)")
+if team1.lower() == 'game over':
+    print("Game terminated Early by user")
+    exit()
+# enter team 2 name or cancel creation
+team2 = input("Enter Second Team Name (Enter 'game over' to terminate session)")
+if team2.lower() == 'game over':
+    print("Game terminated Earl by user")
+    exit()
+
+# Total Score tracker
+
+team1score = 0
+team2score = 0
+
+# temporary score for individual rounds
+
+team1tempscore = 0
+team2tempscore = 0
+
+# || Round Counter ||
+
+counter = 1
+
+# ==== Score Goal set up ====
+while True:
+    temp = input("Enter Score Needed For Win")
+    # end game check
+    if temp.lower() == 'game over':
+        print("###|| Game Over! ||###")
+        exit()
+    try:
+        score_goal = int(temp)
+        # 0 ornegative value check
+        if score_goal <= 0:
+            print("No Zero Values or Negatives!")
+            continue
+        break
+    except ValueError:
+        print("Please Enter a Number (No Words or Letters)")
+
+# Headers for faster print:
+
+def teamscoreboard():
+    print(f"|| Round {counter} || {team1} Score: {team1tempscore} || {team2} Score: {team2tempscore}")
+    print(f"|| Total {team1} Score: {team1score} || Total {team2} Score: {team2score} ||")
+    return
+def final_header():
+    print("🏆🏆🏆 Final Score 🏆🏆🏆")
+    print(f"|| Total {team1} Score: {team1score} || Total {team2} Score: {team2score} ||")
+
+    return
+
+# Initiates First Round
+print(f"|| Starting Round {counter}! ||")
+
+# main loop
+while team1score < score_goal and team2score < score_goal:
+    while True:
+        temp = input(f"Current {team1} Score for Round {counter}:(No Negatives) ")
+        # end game check
+        if temp.lower() == "game over":
+            print("###|| Game Over! ||###")
+            final_header
+            exit()
+        try:
+            # Zero or Negative value check
+            team1tempscore = int(temp)
+            if team1tempscore < 0:
+                print("No Negative Values!")
+                continue
+            break
+        except ValueError:
+            print("Please Enter a Valid Number (No Words or Letters).")
+
+# bump for keeping total score for team 1
+
+    team1score += team1tempscore
+
+    while True:   
+        temp = input(f"Current {team2} Score for Round {counter}:(No Negatives)")
+        # end game check
+        if temp.lower() == "game over":
+            print("###|| Game Over! ||###")
+            final_header()
+            exit()
+        try:
+            team2tempscore = int(temp)
+            # zero or negative value check
+            if team2tempscore < 0:
+                print("No Negative Values!")
+                continue
+            break
+        except ValueError:
+            print("Please Enter a Valid Number (No Words or Letters!)")  
+
+# bump for keeping total score for team 2
+
+    team2score += team2tempscore
+
+    print(f"|| Round {counter} End! ||")
+    teamscoreboard()
+    team1tempscore = 0
+    team2tempscore = 0
+    if team1score < score_goal and team2score < score_goal:
+            # end game check
+            roundcheck = input(" Type 'Game Over' to End Game")
+            if roundcheck == 'game over':
+                print("|| Game Over! ||")
+                                
+            # team 1 win 
+
+                if team1score > team2score:
+                    print(f"|| {team1} Win! ||")
+                
+            # team 2 win
+
+                elif team1score < team2score:
+                    print(f"|| {team2} Win! ||#")
+                else:print("|| Tie Game || ")
+                final_header()
+                break
+
+        # continuing the game to next round
+            else:
+                counter += 1
+                print(f"|| Starting Round {counter} ||")
+                continue
+    
+# team 1 wins from score
+if team1score >= score_goal and team2score < score_goal:
+    print(f"|| {team1} Win After {counter} Rounds! ||")
+    final_header()
+# team 2 wins from score
+elif team1score < score_goal and team2score >= score_goal:
+    print(f"||{team2} Win After {counter} Rounds! ||")
+    final_header()
+# tie game from score
+elif team1score >= score_goal and team2score >= score_goal:
+    print("|| It's a tie! ||")
+    final_header()
