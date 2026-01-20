@@ -1,0 +1,102 @@
+playlist = [
+    {'title': 'yesterday', 'artist': 'the beatles', 'duration': 2.05, 'genre': 'pop'},
+    {'title': 'no. 5', 'artist': 'hollywood undead', 'duration': 3.05, 'genre': 'emo rap'},
+    {'title': 'sarah smiles', 'artist': 'panic! at the disco', 'duration': 3.18, 'genre': 'pop'},
+    {'title': 'earfquake', 'artist': 'tyler,the creator', 'duration': 3.10, 'genre': 'pop'}
+]
+
+
+# searches specified playlist for match, under specified format for adding to playlist
+
+def add_song(pl,song_dict):
+    if not isinstance(song_dict, dict):
+        print('invalid song')
+        return None
+
+    # keys in order for comparing formatting before adding
+
+    required_keys = {'title', 'artist', 'duration', 'genre'}
+
+    # compares entered code is in proper format for diction
+
+    if set(song_dict.keys()) != required_keys:
+        print('invalid song')
+        return None
+
+    # checks to make sure duration is a float or integer to prevent errors
+
+    if not isinstance(song_dict['duration'], (int, float)):
+        print('invalid song')
+        return None
+
+    # adds song to specified playlist
+
+    pl.append(song_dict)
+    return None
+
+# searches every title in specified playlist for a match to remove
+
+def remove_song(pl, title):
+    for i, song in enumerate(pl):
+        if song['title'].lower().strip() == title.lower().strip():
+            pl.pop(i)
+            # stops after first match to prevent over deletion
+            break
+       
+ 
+ # playlist statistics
+
+def playlist_stats(pl):
+    total = len(pl)
+    total_duration = 0
+    genres = {}
+    artists = set()
+    for song in pl:
+        total_duration += song['duration']
+        genre = song['genre']
+        genres[genre] = genres.get(genre,0) + 1
+        artists.add(song['artist'])
+    avg_duration = total_duration / total if total > 0 else 0
+    return{
+        'total': total,
+        'avg duration': round(avg_duration, 2),
+        'genres': genres,
+        'unique artists': artists
+    }
+ 
+# add song test
+
+add_song(playlist, {'title': 'mercury:retrograde', 'artist': 'ghostmane', 'duration': 2.05, 'genre': 'rap'})
+ 
+# remove song test
+
+remove_song(playlist, 'yesterday')
+ 
+# creation of copy playists
+
+def sorted_playlist(pl, sort_by):
+    if sort_by.lower() == 'artist':
+        return sorted(pl, key=lambda song: song['artist'])
+    elif sort_by.lower() == 'duration':
+        return sorted(pl, key=lambda song: song['duration'])
+    elif sort_by.lower() == 'genre':
+        return sorted(pl, key=lambda song: song['genre'])
+    elif sort_by.lower() == 'title':
+        return sorted(pl, key=lambda song: song['title'])
+    elif sort_by.lower() == 'original':
+        return list(pl)
+    else:
+        print("Invalid sort option.")
+        return list(pl)
+
+sort_by = input("type 'artist','duration','genre','title', or 'original'")
+sorted_pl = sorted_playlist(playlist, sort_by)
+
+if sort_by == 'original':
+    print(f"Original playlist:", playlist)
+    print(playlist_stats(playlist))
+else:
+    print(f"Playlist sorted by {sort_by}:", sorted_pl)
+    print(playlist_stats(sorted_pl))
+
+
