@@ -1,0 +1,51 @@
+#Calculate item price with shipping fee
+
+print("| price | quantity | expected subtotal |")
+print("|   3   |    5     |        15         |")
+print("|   5   |    0     |        0          |")
+print("|   -2  |    1     |      reject       |")
+
+def compute_total(price, qty):
+    subtotal = price * qty
+    return subtotal
+
+assert compute_total(6, 3) == 18
+
+print("| subtotal | tax | expected grand total |")
+print("|    3     | .25 |         3.75         |")
+print("|    0     | .25 |          0           |")
+print("|   -21    | .25 |        reject        |")
+
+
+def find_grand_total(subtotal,tax):
+    grand_total = (subtotal * tax) + subtotal
+    return grand_total
+
+assert find_grand_total(21, .25) == 26.25
+
+print("| weight | fee  |")
+print("|   4    |  10  |")
+print("|   5    |  18  |")
+print("|   -1   |reject|")
+
+def shipping_fee(weight):
+    if weight < 5:
+        return 10
+    else:
+        return 18
+
+assert shipping_fee(12) == 18
+
+def checkout(price, qty, tax, weight):
+    compute_total(price, qty)
+    subtotal = compute_total(price, qty)
+    find_grand_total(subtotal, tax)
+    shipping_fee(weight)
+    grand_total = find_grand_total(subtotal,tax)
+    fee = shipping_fee(weight)
+    print(f"Your Grand Total Before Fee's: ${grand_total:.2f}")
+    print(f"Fee's Due Today:               $ {fee:.2f}")
+
+# example usage
+
+checkout(25, 3, .16, 5)
