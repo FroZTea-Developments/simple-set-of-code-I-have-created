@@ -52,7 +52,7 @@ class Barista:
                 if completion_die == 10:
                     customer.completion += 20
                 else:
-                    customer.completion += completion_die
+                    customer.completion += (completion_die + 3)
 
                 patience_roll = random.randint(1, 100)
                 if patience_roll >= 85:
@@ -69,7 +69,7 @@ class Barista:
                         time.sleep(.5)
                     
                     else:
-                        customer.patience -= (annoy_roll//2)
+                        customer.patience -= ((annoy_roll//2) + 1)
                         print("Ouch! -", (annoy_roll//2), "To Patience")
 
 
