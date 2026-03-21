@@ -1,0 +1,106 @@
+import time
+import random
+
+class Customer:
+    def __init__(self, name):
+        self.name = name
+        self.completion = 0
+        self.patience = 100
+    
+    def wait_for_order(self):
+        print(self.name, "is now waiting for their order")
+        print("...")
+        time.sleep(1)
+
+    def receive_order(self):
+        if self.patience > 60:
+            print(self.name, "pays for their order, picks it up and leaves happily!")
+        else:
+            print(self.name, "pays for their order, and leaves a bit disgruntled")
+
+        
+
+class Barista:
+    def __init__(self, name):
+        self.name = name
+    
+    def take_order(self, customer):
+        self.order_status = "in progress"
+        print(self.name, "is taking an order from", customer.name)
+        time.sleep(1)
+        customer.wait_for_order()
+
+    def complete_order(self, customer):
+        while customer.patience > 0 and customer.completion < 100:
+
+            progress_roll = random.randint(1,100)
+            print("Progress roll:", progress_roll)
+            time.sleep(.5)
+
+            if progress_roll == 1:
+                customer.completion = max(0, customer.completion - 10)
+                print("Criticial Fail -10 Completion!")
+                time.sleep(.5)
+            
+            elif progress_roll >= 30:
+                print("Pass!")
+                time.sleep(.5)
+                completion_die = random.randint(2,10)
+                print("Completion Die:", completion_die)
+                time.sleep(.5)
+
+                if completion_die == 10:
+                    customer.completion += 20
+                else:
+                    customer.completion += completion_die
+
+                patience_roll = random.randint(1, 100)
+                if patience_roll >= 85:
+                    print("Saved! No Patience Loss!")
+                    time.sleep(.5)
+                elif patience_roll == 1:
+                    customer.patience -= 10
+                    print("Critical Fail! -10 Patience")
+                    time.sleep(.5)
+                else:
+                    annoy_roll = random.randint(0,10)
+                    if annoy_roll <= 2:
+                        print("Last second Save! No Loss To Patience")
+                        time.sleep(.5)
+                    
+                    else:
+                        customer.patience -= (annoy_roll//2)
+                        print("Ouch! -", (annoy_roll//2), "To Patience")
+
+
+                print("Completion is now at", customer.completion, "Percent")
+                print("Customer Patience is at", customer.patience, "Percent")
+                time.sleep(1.5)
+            else:
+                print(self.name, "fumbled it! No progress made")
+                time.sleep(.5)
+        # after the while loop
+        if customer.completion >= 100 and customer.patience > 0:
+            print("\nOrder completed in time!")
+            self.serve_order(customer)
+        elif customer.patience <= 0:
+            print("\n", customer.name, "has had enough and leaves angrily without paying!", sep="")
+        else:
+            print("\nOrder did not finish, and the customer is gone.")
+    
+    def serve_order(self, customer):
+        self.order_status = "ready"
+        print(self.name, "says: Order ready for", customer.name, "!!")
+        time.sleep(1)
+        customer.receive_order()
+    
+
+customer1 = Customer("Alice")
+barista1 = Barista("Jack")
+
+print("Todays Barista:", barista1.name)
+print("Customer Name:", customer1.name)
+time.sleep(1)
+barista1.take_order(customer1)
+
+barista1.complete_order(customer1)
