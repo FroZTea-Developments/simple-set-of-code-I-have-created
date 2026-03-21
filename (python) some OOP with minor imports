@@ -1,0 +1,25 @@
+import random
+import time
+
+class Pet:
+    def play(self):
+        if self.happiness >= 69:
+            print(self.name, "rolls around on their back with zoomies!")
+            time.sleep(2)
+            print(self.name, "is purring ferociously")
+        elif 68 >= self.happiness >= 50:
+            print(self.name, "plays for a little while..")
+            time.sleep(2)
+            print("...")
+            time.sleep(2)
+            print(self.name, "swats your hand away")
+        else:
+            print(self.name, "Swats at you and groans")
+            time.sleep(1)
+            print("It seem's they are not willing to play right now")
+
+whiskers = Pet()
+whiskers.name = "Whiskers"
+whiskers.happiness = random.randint(1, 100)
+
+whiskers.play()
