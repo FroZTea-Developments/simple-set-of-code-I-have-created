@@ -1,0 +1,31 @@
+class BankAccount:
+    def __init__(self, name, starting_balance):
+        if starting_balance < 25:
+            raise ValueError("Minimum to create account must be $25")
+        self._name = name
+        self._balance = starting_balance
+
+
+    def set_balance(self, new_balance):
+        if new_balance < 0:
+            print("Not enough funds for Transaction")
+            return
+        self._balance = new_balance
+        return self.get_balance()
+    
+    def get_balance(self):
+        return self._balance
+
+    def apply_transaction(self, amount):
+        new_balance = self._balance + amount
+        self.set_balance(new_balance)
+
+check1 = BankAccount("Checking 1", 100)
+
+check1.apply_transaction(-20)
+check1.apply_transaction(30)
+check1.apply_transaction(-10)
+print(check1.get_balance())
+check1.apply_transaction(-120)
+check1.apply_transaction(-200)
+        
